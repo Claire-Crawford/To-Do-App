@@ -1,0 +1,29 @@
+{
+  "name": "to-do-app",
+  "version": "0.1.0",
+  "description": "global campus assignment to-do-list",
+  "main": "index.html",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Claire-Crawford/To-Do-App.git"
+  },
+  "keywords": [
+    "html5",
+    "bootstrap",
+    "vuejs",
+    "todo",
+    "scss"
+  ],
+  "author": "Claire Crawford (Sherrie Teague)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Claire-Crawford/To-Do-App/issues"
+  },
+  "homepage": "https://github.com/Claire-Crawford/To-Do-App#readme",
+  "dependencies": {
+    "vue": "^2.6.11"
+  }
+}
