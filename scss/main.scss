@@ -1,0 +1,55 @@
+// main.scss by Claire Crawford (hidden comment) 
+/* css.style derived from main.scss by Claire Crawford */
+@import "_spacing.scss";
+@import "color-theme/_autumn.scss";
+
+
+
+body {
+    background: #ccc;
+}
+
+header{
+    background: $color-primary-background;
+    color: $color-primary;
+    @include spacing;
+}
+
+content {
+    background: $color-secondary-background;
+    color: grey;
+    @include spacing;
+}
+
+#userInp {
+    background: $color-secondary-background;
+    color: $color-secondary;
+}
+
+#userOut{
+    background: $color-primary-background;
+    color: $color-primary;
+}
+
+.card-body {
+    color: $color-primary-background;
+    font-weight:bold;
+}
+
+footer {
+    background: $color-primary-background;
+    color: $color-primary;
+    @include spacing;
+}
+
+.btn {
+    padding: 10px 20px;
+
+    &.primary {
+        background: $color-primary;
+    }
+
+    &.secondary {
+        background: $color-secondary;
+    }
+}
