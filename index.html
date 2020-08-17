@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<head>
+    <title> To-Do List </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<style>
+    body {
+        margin-top: 50px;
+        background-color: mistyrose;
+        font-family: "Volkorn, Geneva, Tahoma, sans-serif";
+        font-size: 1.3em;
+    }
+
+    span.delete {
+        font-size: 2em;
+        background-color: red;
+    }
+
+    main {
+        background-color: darkcyan;
+        padding: 15px;
+    }
+
+    aside {
+        background-color: darkolivegreen;
+        padding: 15px;
+    }
+
+    .complete {
+        zoom: 1.8;
+    }
+
+    ul label {
+        padding: 10px;
+    }
+</style>
+
+<body>
+    <aside class="container-md">
+        <h1 class="alert alert-primary" role="alert">Task Controls</h1>
+        <section class="alert alert-success" role="alert">
+            <h2 class="alert-heading">Add Task</h2>
+            <input type="text" name="newTask" size="80" placeholder="Enter Task Description..." id="taskDesc">
+            <button type="button" onClick="addNewTask();">Save</button>
+        </section>
+        <section class="alert alert-danger" role="alert">
+            <h2 class="alert-heading">Delete All Tasks</h2>
+            <button type="button" class="btn btn-default" onClick="deleteAll();">
+                <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                    <path fill-rule="evenodd"
+                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                </svg>
+            </button>
+        </section>
+    </aside>
+
+    <content>
+        <main class="container-md" id="main">
+            <h1 class="alert alert-info" role="alert">To-Do List</h1>
+            <section class="alert alert-warning" role="alert">
+                <h2 class="alert-heading">Tasks to Complete</h2>
+                <tbody>
+                    <ul id="uncompTask">
+                    </ul>
+                </tbody>
+            </section>
+            <section class="alert alert-secondary" role="alert">
+                <h2 class="alert-heading">Completed Tasks</h2>
+                <tbody>
+                    <ul id="compTask">
+                    </ul>
+                </tbody>
+            </section>
+        </main>
+    </content>
+    <script>
+        // Any global settings that are needed for this to run.
+        function init() {
+            let list1 = document.getElementById("uncompTask");
+            list1.onclick = updateUncompTask;
+            let list2 = document.getElementById("compTask");
+            list2.onclick = updateCompTask;
+        }
+
+        // Put a new task on the list
+        function addNewTask() {
+            let newTask = document.getElementById("taskDesc");
+            if (newTask.value != "") {
+                let list = document.getElementById("uncompTask");
+                let li = document.createElement("li");
+                li.innerHTML =
+                    `<input type="checkbox" class="complete"><label>${newTask.value}</label> <span class="delete">␡</span>`;
+                list.appendChild(li);
+            } else {
+                alert("Please include description of task!");
+            }
+            newTask.value = null; // The new task is added.
+        }
+
+        // Change the list depending on the action and task clicked.
+        function updateUncompTask(event) {
+            if (event.target.className == "delete") {
+                let task = event.target.parentNode;
+                let list = task.parentNode;
+                list.removeChild(task);
+            }
+
+            if (event.target.className == "complete") {
+                let checkbox = event.target;
+                let task = checkbox.nextSibling.nextSibling;
+                if (checkbox.checked) {
+                    // find and then remove task from current `ul`
+                    let taskItem = task.parentNode;
+                    let list1 = taskItem.parentNode;
+                    list1.removeChild(taskItem);
+                    // add task to new `ul`
+                    let target = document.getElementById("compTask")
+                    target.insertBefore(taskItem, target.childNodes[0]);
+                }
+            }
+        }
+
+        // Change the list depending on the action and task clicked.
+        function updateCompTask(event) {
+            if (event.target.className == "delete") {
+                let task = event.target.parentNode;
+                let list = task.parentNode;
+                list.removeChild(task);
+            }
+
+            if (event.target.className == "complete") {
+                let checkbox = event.target;
+                let task = checkbox.nextSibling.nextSibling;
+                if (!checkbox.checked) {
+                    // find and then remove task from current `ul`
+                    let taskItem = task.parentNode;
+                    let list1 = taskItem.parentNode;
+                    list1.removeChild(taskItem);
+                    // add task to new `ul`
+                    let target = document.getElementById("uncompTask")
+                    target.insertBefore(taskItem, target.childNodes[0]);
+                }
+
+            }
+        }
+
+        // Remove any tasks from the list.
+        function deleteAll() {
+            // alert("deleting all");
+            let list1 = document.getElementById("compTask");
+            list1.innerHTML = null;
+            let list2 = document.getElementById("uncompTask");
+            list2.innerHTML = null;
+        }
+
+        // Make sure to initialize the script.
+        init();
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>
