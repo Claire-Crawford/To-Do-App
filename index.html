@@ -43,12 +43,12 @@
         <h1 class="alert alert-primary" role="alert">Task Controls</h1>
         <section class="alert alert-success" role="alert">
             <h2 class="alert-heading">Add Task</h2>
-            <input type="text" name="newTask" size="80" placeholder="Enter Task Description..." id="taskDesc">
-            <button type="button" onClick="addNewTask();">Save</button>
+            <input type="text" v-model="newTask" size="80" placeholder="Enter Task Description..." id="taskDesc"  v-on:keyup.enter="saveTask">
+            <button type="button" v-on:click="saveTask();">Save</button>
         </section>
         <section class="alert alert-danger" role="alert">
             <h2 class="alert-heading">Delete All Tasks</h2>
-            <button type="button" class="btn btn-default" onClick="deleteAll();">
+            <button type="button" class="btn btn-default" v-on:click="clearAll()">
                 <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor"
                     xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -67,6 +67,14 @@
                 <h2 class="alert-heading">Tasks to Complete</h2>
                 <tbody>
                     <ul id="uncompTask">
+                        <li v-for="task in tasks">
+                            <input type="checkbox" v-model="task.done">
+                            <button type="button" v-on:click="deleteTask(task)">&times;</button>
+                            <span v-bind:class="task.done ? 'task-done' : 'task-todo'">
+                                {{ task.subject }}
+                            </span>
+                            <i v-bind:class="task.done ? 'fa fa-check' : 'fa fa-exclamation-circle'"></i>
+                        </li>
                     </ul>
                 </tbody>
             </section>
@@ -79,88 +87,53 @@
             </section>
         </main>
     </content>
+
+     <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- production version, optimized for size and speed -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+
     <script>
-        // Any global settings that are needed for this to run.
-        function init() {
-            let list1 = document.getElementById("uncompTask");
-            list1.onclick = updateUncompTask;
-            let list2 = document.getElementById("compTask");
-            list2.onclick = updateCompTask;
-        }
-
-        // Put a new task on the list
-        function addNewTask() {
-            let newTask = document.getElementById("taskDesc");
-            if (newTask.value != "") {
-                let list = document.getElementById("uncompTask");
-                let li = document.createElement("li");
-                li.innerHTML =
-                    `<input type="checkbox" class="complete"><label>${newTask.value}</label> <span class="delete">␡</span>`;
-                list.appendChild(li);
-            } else {
-                alert("Please include description of task!");
-            }
-            newTask.value = null; // The new task is added.
-        }
-
-        // Change the list depending on the action and task clicked.
-        function updateUncompTask(event) {
-            if (event.target.className == "delete") {
-                let task = event.target.parentNode;
-                let list = task.parentNode;
-                list.removeChild(task);
-            }
-
-            if (event.target.className == "complete") {
-                let checkbox = event.target;
-                let task = checkbox.nextSibling.nextSibling;
-                if (checkbox.checked) {
-                    // find and then remove task from current `ul`
-                    let taskItem = task.parentNode;
-                    let list1 = taskItem.parentNode;
-                    list1.removeChild(taskItem);
-                    // add task to new `ul`
-                    let target = document.getElementById("compTask")
-                    target.insertBefore(taskItem, target.childNodes[0]);
+        var app = new Vue({
+            el: '#app',
+            data: {
+                newTask: null,
+                tasks: [
+                    {
+                        done: false,
+                        subject: 'Hit record'
+                    },
+                    {
+                        done: true,
+                        subject: 'Welcome the Students'
+                    },
+                    {
+                        done: false,
+                        subject: 'Review Homework',
+                    }
+                ],
+                saveTask: function() {
+                    if (this.newTask == null) {
+                        alert('Enter a task!');
+                        return;
+                    }
+                    this.tasks.push({
+                        done: false,
+                        subject: this.newTask
+                    });
+                    this.newTask = null;
+                },
+                deleteTask: function(task) {
+                    this.tasks = this.tasks.filter(function(e) {
+                        return e.subject != task.subject;
+                    });
+                },
+                clearAll: function() {
+                    this.tasks = [];
                 }
             }
-        }
-
-        // Change the list depending on the action and task clicked.
-        function updateCompTask(event) {
-            if (event.target.className == "delete") {
-                let task = event.target.parentNode;
-                let list = task.parentNode;
-                list.removeChild(task);
-            }
-
-            if (event.target.className == "complete") {
-                let checkbox = event.target;
-                let task = checkbox.nextSibling.nextSibling;
-                if (!checkbox.checked) {
-                    // find and then remove task from current `ul`
-                    let taskItem = task.parentNode;
-                    let list1 = taskItem.parentNode;
-                    list1.removeChild(taskItem);
-                    // add task to new `ul`
-                    let target = document.getElementById("uncompTask")
-                    target.insertBefore(taskItem, target.childNodes[0]);
-                }
-
-            }
-        }
-
-        // Remove any tasks from the list.
-        function deleteAll() {
-            // alert("deleting all");
-            let list1 = document.getElementById("compTask");
-            list1.innerHTML = null;
-            let list2 = document.getElementById("uncompTask");
-            list2.innerHTML = null;
-        }
-
-        // Make sure to initialize the script.
-        init();
+        });
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
