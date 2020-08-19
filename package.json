@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/Claire-Crawford/To-Do-App#readme",
   "dependencies": {
+    "bootstrap-vue": "^2.16.0",
     "vue": "^2.6.11"
   },
   "devDependencies": {

@@ -4,17 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vue.js To-Do-App</title>
+    <title> To-Do List </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">  <title> To-Do List </title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <style>
     body {
         margin-top: 50px;
-        background-color: mistyrose;                                          
+        background-color: mistyrose;
         font-family: "Volkorn, Geneva, Tahoma, sans-serif";
         font-size: 1.3em;
     }
@@ -44,11 +42,13 @@
 </style>
 
 <body>
+
     <aside class="container-md">
         <h1 class="alert alert-primary" role="alert">Task Controls</h1>
-        <section class="alert alert-success" role="alert">
+        <section id="app" class="alert alert-success" role="alert">
             <h2 class="alert-heading">Add Task</h2>
-            <input type="text" v-model="newTask" size="80" placeholder="Enter Task Description..." id="taskDesc"  v-on:keyup.enter="saveTask">
+            <input type="text" v-model="newTask" size="80" placeholder="Enter Task Description..." id="taskDesc"
+                v-on:keyup.enter="saveTask">
             <button type="button" v-on:click="saveTask();">Save</button>
         </section>
         <section class="alert alert-danger" role="alert">
@@ -67,33 +67,35 @@
 
     <content>
         <main class="container-md" id="main">
-            <h1 class="alert alert-info" role="alert">To-Do List</h1>
-            <section class="alert alert-warning" role="alert">
-                <h2 class="alert-heading">Tasks to Complete</h2>
-                <tbody>
-                    <ul id="uncompTask">
-                        <li v-for="task in tasks">
-                            <input type="checkbox" v-model="task.done">
-                            <button type="button" v-on:click="deleteTask(task)">&times;</button>
-                            <span v-bind:class="task.done ? 'task-done' : 'task-todo'">
-                                {{ task.subject }}
-                            </span>
-                            <i v-bind:class="task.done ? 'fa fa-check' : 'fa fa-exclamation-circle'"></i>
-                        </li>
-                    </ul>
-                </tbody>
-            </section>
-            <section class="alert alert-secondary" role="alert">
-                <h2 class="alert-heading">Completed Tasks</h2>
-                <tbody>
-                    <ul id="compTask">
-                    </ul>
-                </tbody>
-            </section>
+            <div id="app">
+                <h1 class="alert alert-info" role="alert">To-Do List</h1>
+                <section class="alert alert-warning" role="alert">
+                    <h2 class="alert-heading">Tasks to Complete</h2>
+                    <tbody>
+                        <ul id="uncompTask">
+                            <li v-for="task in tasks">
+                                <input type="checkbox" v-model="task.done">
+                                <button type="button" v-on:click="deleteTask(task)">&times;</button>
+                                <span v-bind:class="task.done ? 'task-done' : 'task-todo'">
+                                    {{ task.subject }}
+                                </span>
+                                <i v-bind:class="task.done ? 'fa fa-check' : 'fa fa-exclamation-circle'"></i>
+                            </li>
+                        </ul>
+                    </tbody>
+                </section>
+                <section class="alert alert-secondary" role="alert">
+                    <h2 class="alert-heading">Completed Tasks</h2>
+                    <tbody>
+                        <ul id="compTask">
+                        </ul>
+                    </tbody>
+                </section>
+            </div>
         </main>
     </content>
 
-     <!-- development version, includes helpful console warnings -->
+    <!-- development version, includes helpful console warnings -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
     <!-- production version, optimized for size and speed -->
@@ -104,8 +106,7 @@
             el: '#app',
             data: {
                 newTask: null,
-                tasks: [
-                    {
+                tasks: [{
                         done: false,
                         subject: 'Hit record'
                     },
@@ -118,7 +119,7 @@
                         subject: 'Review Homework',
                     }
                 ],
-                saveTask: function() {
+                saveTask: function () {
                     if (this.newTask == null) {
                         alert('Enter a task!');
                         return;
@@ -129,12 +130,12 @@
                     });
                     this.newTask = null;
                 },
-                deleteTask: function(task) {
-                    this.tasks = this.tasks.filter(function(e) {
+                deleteTask: function (task) {
+                    this.tasks = this.tasks.filter(function (e) {
                         return e.subject != task.subject;
                     });
                 },
-                clearAll: function() {
+                clearAll: function () {
                     this.tasks = [];
                 }
             }

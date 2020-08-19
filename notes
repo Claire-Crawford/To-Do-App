@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue.js To-Do</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        li {
+            padding: 5px 0;
+        }
+
+        .task-done {
+            text-decoration: line-through;
+        }
+
+        .task-todo {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <h1>Vue.js To-Do App</h1>
+        <input v-model="newTask" placeholder="New Task..." v-on:keyup.enter="saveTask">
+
+        <ol>
+            <li v-for="task in tasks">
+                <input type="checkbox" v-model="task.done">
+                <button type="button" v-on:click="deleteTask(task)">&times;</button>
+                <span v-bind:class="task.done ? 'task-done' : 'task-todo'">
+                    {{ task.subject }}
+                </span>
+                <i v-bind:class="task.done ? 'fa fa-check' : 'fa fa-exclamation-circle'"></i>
+            </li>
+        </ol>
+
+        <button type="button" v-on:click="clearAll()">Clear All</button>
+
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                newTask: null,
+                tasks: [
+                    {
+                        done: false,
+                        subject: 'Hit record'
+                    },
+                    {
+                        done: true,
+                        subject: 'Welcome the Students'
+                    },
+                    {
+                        done: false,
+                        subject: 'Review Homework',
+                    }
+                ],
+                saveTask: function() {
+                    if (this.newTask == null) {
+                        alert('Enter a Task!');
+                        return;
+                    }
+                    this.tasks.push({
+                        done: false,
+                        subject: this.newTask
+                    });
+                    this.newTask = null;
+                },
+                deleteTask: function(task) {
+                    this.tasks = this.tasks.filter(function(e) {
+                        return e.subject != task.subject;
+                    });
+                },
+                clearAll: function() {
+                    this.tasks = [];
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue.js To-Do-App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">  <title> To-Do List </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<style>
+    body {
+        margin-top: 50px;
+        background-color: mistyrose;                                          
+        font-family: "Volkorn, Geneva, Tahoma, sans-serif";
+        font-size: 1.3em;
+    }
+
+    span.delete {
+        font-size: 2em;
+        background-color: red;
+    }
+
+    main {
+        background-color: darkcyan;
+        padding: 15px;
+    }
+
+    aside {
+        background-color: darkolivegreen;
+        padding: 15px;
+    }
+
+    .complete {
+        zoom: 1.8;
+    }
+
+    ul label {
+        padding: 10px;
+    }
+</style>
+
+<body>
+
+    <aside class="container-md">
+        <h1 class="alert alert-primary" role="alert">Task Controls</h1>
+        <section id="app" class="alert alert-success" role="alert">
+            <h2 class="alert-heading">Add Task</h2>
+            <input type="text" v-model="newTask" size="80" placeholder="Enter Task Description..." id="taskDesc"  v-on:keyup.enter="saveTask">
+            <button type="button" v-on:click="saveTask();">Save</button>
+        </section>
+        <section class="alert alert-danger" role="alert">
+            <h2 class="alert-heading">Delete All Tasks</h2>
+            <button type="button" class="btn btn-default" v-on:click="clearAll()">
+                <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                    <path fill-rule="evenodd"
+                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                </svg>
+            </button>
+        </section>
+    </aside>
+
+    <content>
+        <main class="container-md" id="main">
+            <h1 class="alert alert-info" role="alert">To-Do List</h1>
+            <section class="alert alert-warning" role="alert">
+                <h2 class="alert-heading">Tasks to Complete</h2>
+                <tbody>
+                    <ul id="uncompTask">
+                        <li v-for="task in tasks">
+                            <input type="checkbox" v-model="task.done">
+                            <button type="button" v-on:click="deleteTask(task)">&times;</button>
+                            <span v-bind:class="task.done ? 'task-done' : 'task-todo'">
+                                {{ task.subject }}
+                            </span>
+                            <i v-bind:class="task.done ? 'fa fa-check' : 'fa fa-exclamation-circle'"></i>
+                        </li>
+                    </ul>
+                </tbody>
+            </section>
+            <section class="alert alert-secondary" role="alert">
+                <h2 class="alert-heading">Completed Tasks</h2>
+                <tbody>
+                    <ul id="compTask">
+                    </ul>
+                </tbody>
+            </section>
+        </main>
+    </content>
+
+     <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- production version, optimized for size and speed -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                newTask: null,
+                tasks: [
+                    {
+                        done: false,
+                        subject: 'Hit record'
+                    },
+                    {
+                        done: true,
+                        subject: 'Welcome the Students'
+                    },
+                    {
+                        done: false,
+                        subject: 'Review Homework',
+                    }
+                ],
+                saveTask: function() {
+                    if (this.newTask == null) {
+                        alert('Enter a task!');
+                        return;
+                    }
+                    this.tasks.push({
+                        done: false,
+                        subject: this.newTask
+                    });
+                    this.newTask = null;
+                },
+                deleteTask: function(task) {
+                    this.tasks = this.tasks.filter(function(e) {
+                        return e.subject != task.subject;
+                    });
+                },
+                clearAll: function() {
+                    this.tasks = [];
+                }
+            }
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>
