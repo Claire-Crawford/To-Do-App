@@ -42,10 +42,10 @@
 </style>
 
 <body>
-
+    <div id="todoApp">
     <aside class="container-md">
         <h1 class="alert alert-primary" role="alert">Task Controls</h1>
-        <section id="app" class="alert alert-success" role="alert">
+        <section class="alert alert-success" role="alert">
             <h2 class="alert-heading">Add Task</h2>
             <input type="text" v-model="newTask" size="80" placeholder="Enter Task Description..." id="taskDesc"
                 v-on:keyup.enter="saveTask">
@@ -53,7 +53,11 @@
         </section>
         <section class="alert alert-danger" role="alert">
             <h2 class="alert-heading">Delete All Tasks</h2>
-            <button type="button" class="btn btn-default" v-on:click="clearAll()">
+            <button 
+                type="button" 
+                class="btn btn-default" 
+                v-on:click="clearAll()">
+
                 <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor"
                     xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -67,37 +71,55 @@
 
     <content>
         <main class="container-md" id="main">
-            <div>
-                <h1 class="alert alert-info" role="alert">To-Do List</h1>
+            <h1 class="alert alert-info" role="alert">To-Do List</h1>
                 <section class="alert alert-warning" role="alert">
                     <h2 class="alert-heading">Tasks to Complete</h2>
                     <tbody >
-                        <div id="todoApp">
-                            <h3>{{message}}</h3>
                         <ul id="uncompTask">
-                            <li v-for="task in tasks">
-                                <input type="checkbox" v-model="task.done">
-                                <button type="button" v-on:click="deleteTask(task)">&times;</button>
-                                <span v-bind:class="task.done ? 'task-done' : 'task-todo'">
-                                    {{ task.subject }}
-                                </span>
-                                <i v-bind:class="task.done ? 'fa fa-check' : 'fa fa-exclamation-circle'"></i>
-                            </li>
+                            <div v-for="task in tasks">
+                                <template v-if="task.done === false">
+                                    <li>
+                                    <input type="checkbox" v-model="task.done">
+
+                                    <button type="button" v-on:click="deleteTask(task)">&times;</button>
+
+                                    <span v-bind:class="task.done ? 'task-done' : 'task-todo'">
+                                        {{ task.subject }}
+                                    </span>
+
+                                    <i v-bind:class="task.done ? 'fa fa-check' : 'fa fa-exclamation-circle'"></i>
+                                </li>
+                                </template>
+                            </div>
                         </ul>
-                        </div>
                     </tbody>
                 </section>
                 <section class="alert alert-secondary" role="alert">
                     <h2 class="alert-heading">Completed Tasks</h2>
                     <tbody>
                         <ul id="compTask">
+                            <div v-for="task in tasks">
+                                <template v-if="task.done">
+                                    <li>
+                                    <input type="checkbox" v-model="task.done">
+
+                                    <button type="button" v-on:click="deleteTask(task)">&times;</button>
+
+                                    <span v-bind:class="task.done ? 'task-done' : 'task-todo'">
+                                        {{ task.subject }}
+                                    </span>
+
+                                    <i v-bind:class="task.done ? 'fa fa-check' : 'fa fa-exclamation-circle'"></i>
+                                </li>
+                                </template>
+                            </div> 
                         </ul>
                     </tbody>
                 </section>
             </div>
         </main>
     </content>
-
+</div>
     <!-- development version, includes helpful console warnings -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
@@ -122,7 +144,7 @@
                         done: false,
                         subject: 'Review Homework',
                     }
-                ],
+                ],c
                 compTask: [],
                 saveTask: function () {
                     if (this.newTask == null) {
